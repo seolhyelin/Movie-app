@@ -1,0 +1,30 @@
+@use '/src/styles/constants/colors';
+
+.container {
+  .searchWrapper {
+    width: 360px;
+
+    .searchInput {
+      width: 280px;
+      height: 50px;
+      padding-left: 7px;
+      margin-right: 7px;
+      font-size: 18px;
+      letter-spacing: 2px;
+      border: 1px solid colors.$SEARCH;
+      border-radius: 10px;
+    }
+
+    .searchButton {
+      float: right;
+      width: 70px;
+      height: 50px;
+      padding-top: 5px;
+      font-size: 25px;
+      color: colors.$POINT;
+      cursor: pointer;
+      border: 1px solid colors.$SEARCH;
+      border-radius: 10px;
+    }
+  }
+}

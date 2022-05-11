@@ -1,0 +1,44 @@
+@use '/src/styles/constants/colors';
+
+.footer {
+  display: flex;
+  justify-content: space-evenly;
+  width: 360px;
+  height: 70px;
+  padding-top: 19px;
+  background-color: colors.$MAIN;
+  border-bottom-right-radius: 40px;
+  border-bottom-left-radius: 40px;
+
+  .searchWrapper {
+    cursor: pointer;
+
+    .searchIcon {
+      margin-right: 15px;
+      font-size: 25px;
+      color: colors.$POINT;
+    }
+
+    .searchButton {
+      float: right;
+      font-size: 19px;
+      color: colors.$GRAY6;
+    }
+  }
+
+  .bookmarkWrapper {
+    cursor: pointer;
+
+    .bookmarkIcon {
+      margin-right: 15px;
+      font-size: 25px;
+      color: colors.$POINT;
+    }
+
+    .bookmarkButton {
+      float: right;
+      font-size: 19px;
+      color: colors.$GRAY6;
+    }
+  }
+}
