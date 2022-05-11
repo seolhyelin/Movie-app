@@ -1,18 +1,19 @@
-// import axios from 'axios'
-// import { ISearchAPIRes } from 'types/search.d.ts'
+import axios from 'axios'
+import { ISearch } from 'types/search.d'
 
-// const SEARCH_URL = `http://www.omdbapi.com/?apikey=92e32667`
+const SEARCH_URL = `http://www.omdbapi.com/`
 
-// interface Params {
-//   s: string
-//   page: string
-// }
+interface Params {
+  s: string
+  page: number
+}
 
-// export const getSearchApi = (params: Params) => {
-//   axios.get<ISearchAPIRes>(`${SEARCH_URL}`, {
-//     params: {
-//       ...params,
-//     },
-//   })
-// }
-export {}
+export const getSearchApi = (params: Params) =>
+  axios.get<ISearch>(`${SEARCH_URL}`, {
+    params: {
+      ...params,
+      apikey: '92e32667',
+      s: params.s,
+      page: params.page,
+    },
+  })
