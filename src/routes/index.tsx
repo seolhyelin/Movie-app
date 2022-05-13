@@ -1,7 +1,7 @@
 import styles from './routes.module.scss'
 // import { Routes, Route } from 'react-router-dom'
 // import GNB from 'routes/_shared/GNB'
-// import Footer from '../components/Footer/index'
+import Footer from '../components/Footer/index'
 import Search from './SearchPage/index'
 
 const App = () => {
@@ -17,7 +17,7 @@ const App = () => {
           </Route>
         </Routes> */}
         <Search />
-        {/* <Footer /> */}
+        <Footer />
       </div>
     </div>
   )

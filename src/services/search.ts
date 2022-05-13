@@ -12,7 +12,7 @@ export const getSearchApi = (params: Params) =>
   axios.get<ISearch>(`${SEARCH_URL}`, {
     params: {
       ...params,
-      apikey: '92e32667',
+      apikey: process.env.REACT_APP_API_KEY,
       s: params.s,
       page: params.page,
     },

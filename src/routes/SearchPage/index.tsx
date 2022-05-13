@@ -1,4 +1,5 @@
-import { useState } from 'react'
+/* eslint-disable no-promise-executor-return */
+import { useState, useRef, useEffect } from 'react'
 import styles from './searchPage.module.scss'
 
 import { FaSearch } from 'react-icons/fa'
@@ -6,17 +7,21 @@ import { FaSearch } from 'react-icons/fa'
 import { getSearchApi } from 'services/search'
 import { IMovie } from 'types/search.d'
 
+import Loader from 'components/Loader'
+
 const SearchPage: React.FC = () => {
   const [movieList, setMovieList] = useState<IMovie[]>([])
 
   const [keyword, setKeyword] = useState<string>('')
   const [page, setPage] = useState<number>(1)
 
+  const [isLoaded, setIsLoaded] = useState(false)
+  const targetRef = useRef<HTMLDivElement>(null)
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const target = e.currentTarget.value
     setKeyword(target)
   }
-
   const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     const params = {
       s: keyword,
@@ -28,7 +33,45 @@ const SearchPage: React.FC = () => {
     setMovieList(Search)
   }
 
-  console.log(movieList)
+  const getMoreItem = async () => {
+    setIsLoaded(true)
+    await new Promise((reslove) => setTimeout(reslove, 1500))
+    const newPage = page + 1
+
+    const params = {
+      s: keyword,
+      page: newPage,
+    }
+
+    const {
+      data: { Search },
+    } = await getSearchApi(params)
+
+    const newMovieList = movieList.concat(Search)
+    setMovieList(newMovieList)
+    setPage(newPage)
+
+    setIsLoaded(false)
+  }
+
+  const onIntersect = async ([entry]: any, observer: any) => {
+    if (entry.isInteresecting && !isLoaded) {
+      observer.unobserve(entry.target)
+      await getMoreItem()
+      observer.observe(entry.target)
+    }
+  }
+
+  useEffect(() => {
+    let observer
+    if (targetRef.current) {
+      observer = new IntersectionObserver(onIntersect, {
+        threshold: 0.4,
+      })
+
+      observer.observe(targetRef.current)
+    }
+  }, [isLoaded])
 
   return (
     <div className={styles.container}>
@@ -39,9 +82,31 @@ const SearchPage: React.FC = () => {
         </button>
       </section>
       <section className={styles.resultWrapper}>
-        <ul className={styles.resultList}>
-          <li>스파이더맨</li>
-        </ul>
+        {movieList.length === 0 ? (
+          <div>검색 결과가 없습니다.</div>
+        ) : (
+          <>
+            <ul>
+              {movieList?.map((movie) => {
+                return (
+                  <li key={movie.imdbID}>
+                    <section className={styles.movieList}>
+                      <img alt={movie.Title} width='100px' height='120px' src={`${movie.Poster}`} />
+                      <article>
+                        <p>{movie.Title}</p>
+                        <p>{movie.Year}</p>
+                        <p>{movie.Type}</p>
+                      </article>
+                    </section>
+                  </li>
+                )
+              })}
+            </ul>
+            <div ref={targetRef} className={styles.targetElement}>
+              {isLoaded && <Loader />}
+            </div>
+          </>
+        )}
       </section>
     </div>
   )

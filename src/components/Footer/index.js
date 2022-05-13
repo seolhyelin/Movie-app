@@ -1,4 +1,4 @@
-import styles from './Footer.module.scss'
+import styles from './footer.module.scss'
 import { BsFillStarFill } from 'react-icons/bs'
 import { FaSearch } from 'react-icons/fa'
 

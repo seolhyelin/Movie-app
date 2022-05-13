@@ -3,6 +3,7 @@
 .container {
   .searchWrapper {
     width: 360px;
+    margin: 0 auto;
 
     .searchInput {
       width: 280px;
@@ -25,6 +26,32 @@
       cursor: pointer;
       border: 1px solid colors.$SEARCH;
       border-radius: 10px;
+    }
+  }
+
+  .resultWrapper {
+    width: 450px;
+    height: 480px;
+    white-space: nowrap;
+    border: 1px solid red;
+    overflow-y: scroll;
+    .movieList {
+      display: flex;
+      align-items: center;
+
+      img,
+      p {
+        margin-right: 10px;
+      }
+    }
+
+    .targetElement {
+      width: 100vw;
+      height: 140px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
     }
   }
 }
