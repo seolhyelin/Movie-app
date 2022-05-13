@@ -1,4 +1,4 @@
 export interface IModal {
   isShowing: boolean
-  hide: (e: MouseEventHandler<HTMLButtonElement>) => void
+  hide: (e: React.MouseEvent<HTMLButtonElement | HTMLLIElement>) => void
 }

@@ -1,11 +1,11 @@
-import ReactDOM from 'react-dom'
 import styles from './modal.module.scss'
 import { IModal } from '../../types/modal.d'
 
+// eslint-disable-next-line react/prop-types
 const Modal: React.FC<IModal> = ({ isShowing, hide }) => {
   if (isShowing) {
     document.body.style.setProperty('overflow', 'hidden')
-    return ReactDOM.createPortal(
+    return (
       <div className={styles.blackOutStyle}>
         <div className={styles.container}>
           <div className={styles.buttonWrapper}>
@@ -15,8 +15,7 @@ const Modal: React.FC<IModal> = ({ isShowing, hide }) => {
             </button>
           </div>
         </div>
-      </div>,
-      document.body
+      </div>
     )
   }
   document.body.style.setProperty('overflow', 'scroll')

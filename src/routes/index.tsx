@@ -10,11 +10,9 @@ const App = () => {
   return (
     <div className={styles.appWrapper}>
       <div className={styles.app}>
-        {/* <Search />
-        <Footer /> */}
-        <button onClick={handleModalVisible} type='button'>
-          show
-        </button>
+        <Search handleModalVisible={handleModalVisible} />
+        <Footer />
+
         {isShowing && <Modal isShowing={isShowing} hide={handleModalVisible} />}
       </div>
     </div>

@@ -1,5 +1,6 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-promise-executor-return */
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, MouseEventHandler } from 'react'
 import styles from './searchPage.module.scss'
 
 import { FaSearch } from 'react-icons/fa'
@@ -9,8 +10,16 @@ import { IMovie } from 'types/search.d'
 
 import Loader from 'components/Loader'
 
-const SearchPage: React.FC = () => {
-  const [movieList, setMovieList] = useState<IMovie[]>([])
+import { useRecoilState } from 'recoil'
+import { movieListState, favoriteState } from 'recoil/movieList'
+
+interface SearchPageProps {
+  handleModalVisible: (e: React.MouseEvent<HTMLButtonElement | HTMLLIElement>) => void
+}
+
+const SearchPage: React.FC<SearchPageProps> = ({ handleModalVisible }) => {
+  const [movieList, setMovieList] = useRecoilState(movieListState)
+  const [a, b] = useRecoilState(favoriteState)
 
   const [keyword, setKeyword] = useState<string>('')
   const [page, setPage] = useState<number>(1)
@@ -30,49 +39,51 @@ const SearchPage: React.FC = () => {
     const {
       data: { Search },
     } = await getSearchApi(params)
-    setMovieList(Search)
+    if (Search) setMovieList(Search)
   }
 
-  const getMoreItem = async () => {
-    setIsLoaded(true)
-    await new Promise((reslove) => setTimeout(reslove, 1500))
-    const newPage = page + 1
+  // const getMoreItem = async () => {
+  //   setIsLoaded(true)
 
-    const params = {
-      s: keyword,
-      page: newPage,
-    }
+  //   await new Promise((reslove) => setTimeout(reslove, 1500))
+  //   const newPage = page + 1
 
-    const {
-      data: { Search },
-    } = await getSearchApi(params)
+  //   const params = {
+  //     s: keyword,
+  //     page: newPage,
+  //   }
 
-    const newMovieList = movieList.concat(Search)
-    setMovieList(newMovieList)
-    setPage(newPage)
+  //   const {
+  //     data: { Search },
+  //   } = await getSearchApi(params)
 
-    setIsLoaded(false)
-  }
+  //   if (Search) {
+  //     const newMovieList = movieList.concat(Search)
+  //     setMovieList(newMovieList)
+  //     setPage(newPage)
+  //   }
 
-  const onIntersect = async ([entry]: any, observer: any) => {
-    if (entry.isInteresecting && !isLoaded) {
-      observer.unobserve(entry.target)
-      await getMoreItem()
-      observer.observe(entry.target)
-    }
-  }
+  //   setIsLoaded(false)
+  // }
 
-  useEffect(() => {
-    let observer
-    if (targetRef.current) {
-      observer = new IntersectionObserver(onIntersect, {
-        threshold: 0.4,
-      })
+  // const onIntersect = async ([entry]: any, observer: any) => {
+  //   if (entry.isIntersecting && !isLoaded) {
+  //     observer.unobserve(entry.target)
+  //     await getMoreItem()
+  //     observer.observe(entry.target)
+  //   }
+  // }
 
-      observer.observe(targetRef.current)
-    }
-  }, [isLoaded])
-
+  // useEffect(() => {
+  //   let observer: IntersectionObserver
+  //   if (targetRef.current) {
+  //     observer = new IntersectionObserver(onIntersect, {
+  //       threshold: 0.4,
+  //     })
+  //     observer.observe(targetRef.current)
+  //   }
+  // }, [isLoaded])
+  console.log(a)
   return (
     <div className={styles.container}>
       <section className={styles.searchWrapper}>
@@ -83,30 +94,29 @@ const SearchPage: React.FC = () => {
       </section>
       <section className={styles.resultWrapper}>
         {movieList.length === 0 ? (
-          <div>검색 결과가 없습니다.</div>
+          <div className={styles.noResult}>검색 결과가 없습니다.</div>
         ) : (
-          <>
-            <ul>
-              {movieList?.map((movie) => {
-                return (
-                  <li key={movie.imdbID}>
-                    <section className={styles.movieList}>
-                      <img alt={movie.Title} width='100px' height='120px' src={`${movie.Poster}`} />
-                      <article>
-                        <p>{movie.Title}</p>
-                        <p>{movie.Year}</p>
-                        <p>{movie.Type}</p>
-                      </article>
-                    </section>
-                  </li>
-                )
-              })}
-            </ul>
-            <div ref={targetRef} className={styles.targetElement}>
-              {isLoaded && <Loader />}
-            </div>
-          </>
+          <ul className={styles.movies}>
+            {movieList?.map((movie) => {
+              return (
+                // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
+                <li key={movie.imdbID} data-title={movie.Title} onClick={handleModalVisible}>
+                  <section className={styles.movieItem}>
+                    <img alt={movie.Title} width='100px' height='120px' src={`${movie.Poster}`} />
+                    <article>
+                      <p>{movie.Title}</p>
+                      <p>{movie.Year}</p>
+                      <p>{movie.Type}</p>
+                    </article>
+                  </section>
+                </li>
+              )
+            })}
+          </ul>
         )}
+        {/* <div ref={targetRef} className={styles.targetElement}>
+          {isLoaded && <Loader />}
+        </div> */}
       </section>
     </div>
   )
