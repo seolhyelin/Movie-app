@@ -1,23 +1,21 @@
 import styles from './routes.module.scss'
-// import { Routes, Route } from 'react-router-dom'
-// import GNB from 'routes/_shared/GNB'
 import Footer from '../components/Footer/index'
 import Search from './SearchPage/index'
+import Modal from '../components/Modal/index'
+import useModal from 'hooks/useModal'
 
 const App = () => {
+  const { isShowing, handleModalVisible } = useModal()
+
   return (
     <div className={styles.appWrapper}>
-      {/* <GNB /> */}
       <div className={styles.app}>
-        {/* <Routes>
-          <Route path='/' element={<TodoList />} />
-          <Route path='todo' element={<TodoList />} />
-          <Route path='weather' element={<Weather />}>
-            <Route path=':city' element={<Weather />} />
-          </Route>
-        </Routes> */}
-        <Search />
-        <Footer />
+        {/* <Search />
+        <Footer /> */}
+        <button onClick={handleModalVisible} type='button'>
+          show
+        </button>
+        {isShowing && <Modal isShowing={isShowing} hide={handleModalVisible} />}
       </div>
     </div>
   )
