@@ -23,6 +23,7 @@
       float: right;
       font-size: 19px;
       color: colors.$GRAY6;
+      cursor: pointer;
     }
   }
 
@@ -39,6 +40,11 @@
       float: right;
       font-size: 19px;
       color: colors.$GRAY6;
+      cursor: pointer;
     }
+  }
+
+  .link {
+    color: colors.$GRAY6;
   }
 }

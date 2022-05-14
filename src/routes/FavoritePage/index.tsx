@@ -1,9 +1,14 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useState } from 'react'
 import styles from './favoritePage.module.scss'
 import { IMovie } from 'types/search'
 import { useMount } from 'react-use'
 
-const FavoritePage = () => {
+interface FavoritePageProps {
+  handleModalVisible: (e: React.MouseEvent<HTMLButtonElement | HTMLLIElement>) => void
+}
+
+const FavoritePage: React.FC<FavoritePageProps> = ({ handleModalVisible }) => {
   const [favoriteList, setFavoriteList] = useState<IMovie[]>([])
 
   useMount(() => {
@@ -18,7 +23,8 @@ const FavoritePage = () => {
         <ul>
           {favoriteList.map((movie) => {
             return (
-              <li key={movie.imdbID} className={styles.movieLists}>
+              // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
+              <li key={movie.imdbID} className={styles.movieLists} onClick={handleModalVisible}>
                 <section className={styles.movieItem}>
                   <img alt={movie.Title} width='100px' height='120px' src={`${movie.Poster}`} />
                   <article>

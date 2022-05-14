@@ -3,13 +3,12 @@
 .container {
   .searchWrapper {
     width: 360px;
-    margin: 0 auto;
+    margin: 40px auto;
 
     .searchInput {
       width: 280px;
       height: 50px;
       padding-left: 7px;
-      margin-right: 7px;
       font-size: 18px;
       letter-spacing: 2px;
       border: 1px solid colors.$SEARCH;
@@ -37,6 +36,8 @@
 
     .noResult {
       height: inherit;
+      margin-top: 30px;
+      font-size: 18px;
       text-align: center;
     }
 

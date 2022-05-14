@@ -18,6 +18,8 @@ const useModal = () => {
     localStorage.setItem('favoriteMovieList', JSON.stringify(updateFavoriteMovieList))
   }
 
+  const deleteFavoriteList = () => {}
+
   const handleModalVisible = (e: React.MouseEvent<HTMLButtonElement | HTMLLIElement>) => {
     const movieTitle = (e.currentTarget as HTMLLIElement).dataset.title
     if (movieTitle) {
@@ -26,6 +28,6 @@ const useModal = () => {
     setIsShowing(!isShowing)
   }
 
-  return { isShowing, handleModalVisible, addFavoriteList }
+  return { isShowing, handleModalVisible, addFavoriteList, deleteFavoriteList }
 }
 export default useModal

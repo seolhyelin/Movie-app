@@ -1,15 +1,18 @@
 .container {
-  width: 360px;
   margin: 0 auto;
 
   .favoriteTitle {
-    margin: 30px auto;
+    margin: 55px auto;
     font-size: 20px;
     text-align: center;
-    border-bottom: 1px solid red;
   }
 
   .favoriteWrapper {
+    width: 450px;
+    height: 480px;
+    overflow-y: scroll;
+    white-space: nowrap;
+
     .movieLists {
       min-height: inherit;
       cursor: pointer;
