@@ -1,16 +1,18 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-promise-executor-return */
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import styles from './searchPage.module.scss'
 
 import { FaSearch } from 'react-icons/fa'
+import { BsFillStarFill } from 'react-icons/bs'
 
 import { getSearchApi } from 'services/search'
+import Loader from 'components/Loader'
 
-// import Loader from 'components/Loader'
-
-import { useRecoilState } from 'recoil'
+import { useRecoilState, useResetRecoilState } from 'recoil'
 import { movieListState } from 'recoil/movieList'
+
+import useModal from '../../hooks/useModal'
 
 interface SearchPageProps {
   handleModalVisible: (e: React.MouseEvent<HTMLButtonElement | HTMLLIElement>) => void
@@ -18,12 +20,14 @@ interface SearchPageProps {
 
 const SearchPage: React.FC<SearchPageProps> = ({ handleModalVisible }) => {
   const [movieList, setMovieList] = useRecoilState(movieListState)
+  const movieResetList = useResetRecoilState(movieListState)
+  const { checkFavoriteList } = useModal()
 
   const [keyword, setKeyword] = useState<string>('')
   const [page, setPage] = useState<number>(1)
 
-  // const [isLoaded, setIsLoaded] = useState(false)
-  // const targetRef = useRef<HTMLDivElement>(null)
+  const [isLoaded, setIsLoaded] = useState(false)
+  const targetRef = useRef<HTMLDivElement>(null)
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const target = e.currentTarget.value
@@ -31,6 +35,8 @@ const SearchPage: React.FC<SearchPageProps> = ({ handleModalVisible }) => {
   }
 
   const handleClick = async () => {
+    movieResetList()
+
     const params = {
       s: keyword,
       page,
@@ -41,47 +47,48 @@ const SearchPage: React.FC<SearchPageProps> = ({ handleModalVisible }) => {
     if (Search) setMovieList(Search)
   }
 
-  // const getMoreItem = async () => {
-  //   setIsLoaded(true)
+  const getMoreItem = async () => {
+    setIsLoaded(true)
 
-  //   await new Promise((reslove) => setTimeout(reslove, 1500))
-  //   const newPage = page + 1
+    await new Promise((reslove) => setTimeout(reslove, 1500))
+    const newPage = page + 1
 
-  //   const params = {
-  //     s: keyword,
-  //     page: newPage,
-  //   }
+    const params = {
+      s: keyword,
+      page: newPage,
+    }
 
-  //   const {
-  //     data: { Search },
-  //   } = await getSearchApi(params)
+    const {
+      data: { Search },
+    } = await getSearchApi(params)
 
-  //   if (Search) {
-  //     const newMovieList = movieList.concat(Search)
-  //     setMovieList(newMovieList)
-  //     setPage(newPage)
-  //   }
+    if (Search) {
+      const newMovieList = movieList.concat(Search)
+      setMovieList(newMovieList)
+      setPage(newPage)
+    }
 
-  //   setIsLoaded(false)
-  // }
+    setIsLoaded(false)
+  }
 
-  // const onIntersect = async ([entry]: any, observer: any) => {
-  //   if (entry.isIntersecting && !isLoaded) {
-  //     observer.unobserve(entry.target)
-  //     await getMoreItem()
-  //     observer.observe(entry.target)
-  //   }
-  // }
+  const onIntersect = async ([entry]: any, observer: any) => {
+    if (entry.isIntersecting && !isLoaded) {
+      observer.unobserve(entry.target)
+      await getMoreItem()
+    }
+  }
 
-  // useEffect(() => {
-  //   let observer: IntersectionObserver
-  //   if (targetRef.current) {
-  //     observer = new IntersectionObserver(onIntersect, {
-  //       threshold: 0.4,
-  //     })
-  //     observer.observe(targetRef.current)
-  //   }
-  // }, [isLoaded])
+  useEffect(() => {
+    let observer: IntersectionObserver
+
+    if (targetRef.current) {
+      observer = new IntersectionObserver(onIntersect, {
+        threshold: 0.4,
+      })
+      observer.observe(targetRef.current)
+    }
+  }, [isLoaded])
+
   return (
     <div className={styles.container}>
       <section className={styles.searchWrapper}>
@@ -90,7 +97,7 @@ const SearchPage: React.FC<SearchPageProps> = ({ handleModalVisible }) => {
           <FaSearch />
         </button>
       </section>
-      <section className={styles.resultWrapper}>
+      <section className={`${styles.resultWrapper} ${movieList.length === 0 && styles.noResultWrapper}`}>
         {movieList.length === 0 ? (
           <div className={styles.noResult}>검색 결과가 없습니다.</div>
         ) : (
@@ -98,23 +105,29 @@ const SearchPage: React.FC<SearchPageProps> = ({ handleModalVisible }) => {
             {movieList?.map((movie) => {
               return (
                 // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
-                <li key={movie.imdbID} data-title={movie.Title} onClick={handleModalVisible}>
+                <li
+                  key={`${movie.imdbID}-${movie.Title}`}
+                  data-title={movie.Title}
+                  onClick={handleModalVisible}
+                  className={styles.resultList}
+                >
                   <section className={styles.movieItem}>
-                    <img alt={movie.Title} width='100px' height='120px' src={`${movie.Poster}`} />
+                    <img alt={movie.Title} width='110px' height='140px' src={`${movie.Poster}`} />
                     <article>
-                      <p>{movie.Title}</p>
+                      <p className={styles.movieTitle}>{movie.Title}</p>
                       <p>{movie.Year}</p>
                       <p>{movie.Type}</p>
                     </article>
+                    {checkFavoriteList(movie.Title) && <BsFillStarFill className={styles.favoriteIcon} />}
                   </section>
                 </li>
               )
             })}
           </ul>
         )}
-        {/* <div ref={targetRef} className={styles.targetElement}>
+        <div ref={targetRef} className={styles.targetElement}>
           {isLoaded && <Loader />}
-        </div> */}
+        </div>
       </section>
     </div>
   )

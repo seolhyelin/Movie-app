@@ -1,9 +1,13 @@
+@use '/src/styles/constants/colors';
+
 .container {
   margin: 0 auto;
 
   .favoriteTitle {
-    margin: 55px auto;
+    margin: 35px auto;
     font-size: 20px;
+    font-weight: 700;
+    color: colors.$GRAY6;
     text-align: center;
   }
 
@@ -22,9 +26,21 @@
       display: flex;
       align-items: center;
 
-      img,
+      img {
+        margin-right: 10px;
+      }
+
+      .movieTitle {
+        margin-bottom: 8px;
+        font-size: 19px;
+        font-weight: 700;
+        color: colors.$POINT;
+      }
+
       p {
         margin-right: 10px;
+        font-size: 17px;
+        color: colors.$GRAY6;
       }
     }
   }
