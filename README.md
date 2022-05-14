@@ -1,30 +1,34 @@
-# Preonboarding_ Grip ##
+# Preonboarding_ Grip #
 
-## **📎 배포주소**
-[배포 주소](https://trusting-ramanujan-d4d088.netlify.app/)
 
-## **👫 팀원**
+[배포 주소](https://curious-cascaron-b18c3e.netlify.app)
 
-- 설혜린
-## **🛠 기술스택**
-- React, React-router-dom, Styled-Components, JavaScript(ES6)
 
-## **✔과제 구현 목록**
+## **기술스택**
+- TypeScript, React, React-router-dom, SCSS, JavaScript(ES6)
 
-- Toggle: 버튼 클릭 시, styled-components 내에 식별 Props를 넘겨 transformX의 값을 동적으로 변경
-- Modal: custom Hooks인 useModal과 createPortal를 사용하여 Modal의 렌더링 여부를 동적으로 결정
-- Tab: 버튼 클릭 시, 현재 active된 요소의 색상을 동적으로 변경 및 이동
-- Tag: Array의 내장 메서드들을 활용하여 현재 List에 있는 값들을 동적으로 생성 및 삭제
-- AutoComplete: String의 내장 메서드인 indexOf을 사용하여 -1일 경우를 제외 한 keyword값을 생성
-- ClickToEdit: onChange() 및 onClick() 이벤트의 콜백 함수를 별도로 설정하여 이벤트 후속 처리
+## **과제 구현 목록**
+#### Search Page
+- 영화 검색어를 입력하면, API로 호출한 검색 결과가 아래로 노출된다.
+- 검색 결과가 없을 경우 '검색 결과가 없습니다'가 노출된다.
+- 무한스크롤 기능을 통해 검색결과 최하단에 닿으면 다음페이지를 불러온다.
+- 영화를 클릭하면 '즐겨찾기' or '취소' 버튼이 담긴 모달창이 나온다.
+- '즐겨찾기' 클릭 시, 로컬스토리지에 저장되며 Favorite Page에도 담긴다.
+- 이미 즐겨찾기가 된 영화 클릭시, '즐겨찾기 해제' 모달이 활성화되고 버튼을 누르면 로컬스토리지에서도 remove된다.
+- 즐겨찾기가 되면, 영화 우측에 Favorite Icon이 활성화된다.
 
-## **📆개발 기간**
+#### Favorite Page
+- Search Page에서 즐겨찾기한 목록들이 노출된다.
+- 영화 선택 시, '즐겨찾기 해제' or '취소' 모달창이 활성화된다.
+- '즐겨찾기 해제'시, 목록에서 제거된다.
 
-- 기간: 2022년 2월 10일 ~ 2022년 2월 15일 (5일간)
+## **개발 기간**
 
-## **👩‍🏫 과제 소감**
-> 다양한 기능들을 구현해봄으로써, state 및 props에 따른 조건부 랜더링의 중요성을 다시 한 번 체화할 수 있었습니다.
-## **📕레퍼런스**
+- 2022년 5월 9일 ~ 2022년 5월 15일
 
-- 이 프로젝트는 [원티드 프론트엔드 프리온보딩 사전 과제](https://www.wanted.co.kr/events/pre_onboarding_course_8)으로 만들었습니다.
-- 실무 수준의 프로젝트이지만 학습용으로 만들었기 때문에 이 코드를 활용하여 이득을 취하거나 무단 배포할 경우 법적으로 문제될 수 있습니다.
+## **과제 소감**
+> TypeScript를 처음 사용하며 프로젝트를 진행하여서 많은 어려움이 있었다. 레퍼런스가 많은 기능들도 직접 내 코드에 적용하기가 쉽지 않았다. 리팩토링하면서 코드도 가독성있게 수정하고, 신경쓰지 못했던 디자인도 만져봐야겠다!
+
+## **레퍼런스**
+
+- 이 프로젝트는 원티드 프리온보딩 기업과제용으로 만들었습니다.
