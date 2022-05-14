@@ -1,17 +1,16 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-promise-executor-return */
-import { useState, useRef, useEffect, MouseEventHandler } from 'react'
+import { useState, useRef } from 'react'
 import styles from './searchPage.module.scss'
 
 import { FaSearch } from 'react-icons/fa'
 
 import { getSearchApi } from 'services/search'
-import { IMovie } from 'types/search.d'
 
-import Loader from 'components/Loader'
+// import Loader from 'components/Loader'
 
 import { useRecoilState } from 'recoil'
-import { movieListState, favoriteState } from 'recoil/movieList'
+import { movieListState } from 'recoil/movieList'
 
 interface SearchPageProps {
   handleModalVisible: (e: React.MouseEvent<HTMLButtonElement | HTMLLIElement>) => void
@@ -19,19 +18,19 @@ interface SearchPageProps {
 
 const SearchPage: React.FC<SearchPageProps> = ({ handleModalVisible }) => {
   const [movieList, setMovieList] = useRecoilState(movieListState)
-  const [a, b] = useRecoilState(favoriteState)
 
   const [keyword, setKeyword] = useState<string>('')
   const [page, setPage] = useState<number>(1)
 
-  const [isLoaded, setIsLoaded] = useState(false)
-  const targetRef = useRef<HTMLDivElement>(null)
+  // const [isLoaded, setIsLoaded] = useState(false)
+  // const targetRef = useRef<HTMLDivElement>(null)
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const target = e.currentTarget.value
     setKeyword(target)
   }
-  const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+
+  const handleClick = async () => {
     const params = {
       s: keyword,
       page,
@@ -83,7 +82,6 @@ const SearchPage: React.FC<SearchPageProps> = ({ handleModalVisible }) => {
   //     observer.observe(targetRef.current)
   //   }
   // }, [isLoaded])
-  console.log(a)
   return (
     <div className={styles.container}>
       <section className={styles.searchWrapper}>
