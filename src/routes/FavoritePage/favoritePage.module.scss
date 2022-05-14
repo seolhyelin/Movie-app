@@ -3,9 +3,26 @@
   margin: 0 auto;
 
   .favoriteTitle {
+    margin: 30px auto;
     font-size: 20px;
     text-align: center;
-    margin: 30px auto;
     border-bottom: 1px solid red;
+  }
+
+  .favoriteWrapper {
+    .movieLists {
+      min-height: inherit;
+      cursor: pointer;
+    }
+
+    .movieItem {
+      display: flex;
+      align-items: center;
+
+      img,
+      p {
+        margin-right: 10px;
+      }
+    }
   }
 }

@@ -32,8 +32,8 @@
   .resultWrapper {
     width: 450px;
     height: 480px;
-    white-space: nowrap;
     overflow-y: scroll;
+    white-space: nowrap;
 
     .noResult {
       height: inherit;
@@ -56,10 +56,10 @@
     }
 
     .targetElement {
-      height: 140px;
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
+      height: 140px;
       text-align: center;
     }
   }
