@@ -11,8 +11,7 @@ import Loader from 'components/Loader'
 
 import { useRecoilState, useResetRecoilState } from 'recoil'
 import { movieListState } from 'recoil/movieList'
-
-import useModal from '../../hooks/useModal'
+import { IMovie } from 'types/search'
 
 interface SearchPageProps {
   handleModalVisible: (e: React.MouseEvent<HTMLButtonElement | HTMLLIElement>) => void
@@ -21,13 +20,19 @@ interface SearchPageProps {
 const SearchPage: React.FC<SearchPageProps> = ({ handleModalVisible }) => {
   const [movieList, setMovieList] = useRecoilState(movieListState)
   const movieResetList = useResetRecoilState(movieListState)
-  const { checkFavoriteList } = useModal()
 
   const [keyword, setKeyword] = useState<string>('')
   const [page, setPage] = useState<number>(1)
 
   const [isLoaded, setIsLoaded] = useState(false)
   const targetRef = useRef<HTMLDivElement>(null)
+
+  const markFavorite = (movieTitle: string) => {
+    const local = JSON.parse(localStorage.getItem('favoriteMovieList') as string)
+    if (!local) return false
+    const isCheck = local.find((movie: IMovie) => movie.Title === movieTitle)
+    return isCheck
+  }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const target = e.currentTarget.value
@@ -118,7 +123,7 @@ const SearchPage: React.FC<SearchPageProps> = ({ handleModalVisible }) => {
                       <p>{movie.Year}</p>
                       <p>{movie.Type}</p>
                     </article>
-                    {checkFavoriteList(movie.Title) && <BsFillStarFill className={styles.favoriteIcon} />}
+                    {markFavorite(movie.Title) && <BsFillStarFill className={styles.favoriteIcon} />}
                   </section>
                 </li>
               )
